@@ -7,13 +7,14 @@ class GaussianClass:
         self.n_samples = n_samples
         self.mean_range = mean_range
         self.cov_range = cov_range
+        self.generator = np.random.default_rng()
 
     def generate_data(self):
         data = []
         for _ in range(self.n_modes):
-            mean = np.random.uniform(self.mean_range[0], self.mean_range[1], 2)
-            cov = np.random.uniform(self.cov_range[0], self.cov_range[1]) * np.eye(2)
-            samples = np.random.multivariate_normal(mean, cov, self.n_samples)
+            mean = self.generator.uniform(self.mean_range[0], self.mean_range[1], 2)
+            cov = self.generator.uniform(self.cov_range[0], self.cov_range[1]) * np.eye(2)
+            samples = self.generator.multivariate_normal(mean, cov, self.n_samples)
             data.append(samples)
         
         return np.vstack(data)

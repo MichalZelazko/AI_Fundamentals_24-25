@@ -1,7 +1,6 @@
 import streamlit as st
-import numpy as np
 import matplotlib.pyplot as plt
-import GaussianClass
+from GaussianClass import GaussianClass
 
 # Sidebar inputs
 st.sidebar.write("Parameters")
