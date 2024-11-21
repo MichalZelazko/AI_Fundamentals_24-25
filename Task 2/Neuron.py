@@ -21,7 +21,7 @@ class Neuron:
         return np.tanh(s)
 
     def tanh_derivative(self, s):
-        return 1 - np.tanh(s) ** 2
+        return (1/np.cosh(s)) ** 2
 
     def sin(self, s):
         return np.sin(s)
@@ -46,7 +46,7 @@ class Neuron:
 
     def get_learning_rate(self, epoch, total_epochs):
         return self.learning_rate_min + (self.learning_rate_max - self.learning_rate_min) * \
-               (1 + np.cos((epoch / total_epochs) * np.pi)) / 2
+               (1 + np.cos((epoch / total_epochs) * np.pi))
 
     def activate(self, s):
         if self.activation == 'heaviside':
@@ -85,7 +85,7 @@ class Neuron:
             raise ValueError(f"Unsupported activation function: {self.activation}")
 
     def forward(self, x):
-        x_with_bias = np.append(x, 1)  # Add bias term
+        x_with_bias = np.append(x, 1)
         s = np.dot(self.weights, x_with_bias)
         return self.activate(s)
 
@@ -93,14 +93,10 @@ class Neuron:
     def train(self, X, y, epochs=100):        
         for epoch in range(epochs):
             current_lr = self.get_learning_rate(epoch, epochs)
-            
             for x_i, d in zip(X, y):
-                x_i_with_bias = np.append(x_i, 1)  # Add bias term
+                x_i_with_bias = np.append(x_i, 1)
                 s = np.dot(self.weights, x_i_with_bias)
                 y_pred = self.activate(s)
                 derivative = self.derivative(s)
-                # Error
                 error = d - y_pred
-                
-                # Weight update with current learning rate
                 self.weights += current_lr * error * derivative * x_i_with_bias
